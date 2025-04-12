@@ -3,41 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Documentation de l'API</title>
+  
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
-      background-color: #f4f7fc;
+      margin: 2rem;
+      background: #f0f4f7;
     }
     h1 {
-      color: #1c3e72;
+      color: #2a4d69;
     }
-    pre {
-      background-color: #eee;
-      padding: 10px;
-      border-radius: 5px;
+    section {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    code {
+      background: #eaeaea;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
-  <h1>Documentation de l'API - Port de Plaisance de Russell</h1>
+  <h1>📄 Documentation de l'API - Port de Plaisance de Russell</h1>
 
-  <h2>Catways</h2>
-  <pre>GET /api/catways
-GET /api/catways/:id
-POST /api/catways
-PATCH /api/catways/:id
-DELETE /api/catways/:id</pre>
+  <section>
+    <h2>🔐 Authentification</h2>
+    <p><code>POST /api/auth/register</code> – Créer un compte</p>
+    <p><code>POST /api/auth/login</code> – Se connecter (retourne un token)</p>
+  </section>
 
-  <h2>Réservations</h2>
-  <pre>GET /api/reservations
-GET /api/catways/:id/reservations/:idReservation
-POST /api/catways/:id/reservations
-DELETE /api/catways/:id/reservations/:idReservation</pre>
+  <section>
+    <h2>🛶 Catways</h2>
+    <p><code>GET /api/catways</code> – Liste des catways</p>
+    <p><code>GET /api/catways/:id</code> – Détails d’un catway</p>
+    <p><code>POST /api/catways</code> – Créer un catway</p>
+    <p><code>PATCH /api/catways/:id</code> – Modifier un catway</p>
+    <p><code>DELETE /api/catways/:id</code> – Supprimer un catway</p>
+  </section>
 
-  <h2>Authentification</h2>
-  <pre>POST /api/auth/register
-POST /api/auth/login</pre>
+  <section>
+    <h2>📅 Réservations</h2>
+    <p><code>GET /api/reservations</code> – Liste des réservations</p>
+    <p><code>GET /api/catways/:id/reservations/:idReservation</code> – Détail réservation</p>
+    <p><code>POST /api/catways/:id/reservations</code> – Créer une réservation</p>
+    <p><code>DELETE /api/catways/:id/reservations/:idReservation</code> – Supprimer une réservation</p>
+  </section>
 
   <br>
   <a href="/" style="text-decoration:none;">⬅ Retour à l'accueil</a>
