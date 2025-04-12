@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Documentation de l'API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f7fc;
+    }
+    h1 {
+      color: #1c3e72;
+    }
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Documentation de l'API - Port de Plaisance de Russell</h1>
+
+  <h2>Catways</h2>
+  <pre>GET /api/catways
+GET /api/catways/:id
+POST /api/catways
+PATCH /api/catways/:id
+DELETE /api/catways/:id</pre>
+
+  <h2>Réservations</h2>
+  <pre>GET /api/reservations
+GET /api/catways/:id/reservations/:idReservation
+POST /api/catways/:id/reservations
+DELETE /api/catways/:id/reservations/:idReservation</pre>
+
+  <h2>Authentification</h2>
+  <pre>POST /api/auth/register
+POST /api/auth/login</pre>
+
+  <br>
+  <a href="/" style="text-decoration:none;">⬅ Retour à l'accueil</a>
+</body>
+</html>

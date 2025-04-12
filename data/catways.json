@@ -1,0 +1,12 @@
+[
+  {
+    "catwayNumber": 101,
+    "type": "long",
+    "catwayState": "Disponible"
+  },
+  {
+    "catwayNumber": 102,
+    "type": "short",
+    "catwayState": "Occupé"
+  }
+]

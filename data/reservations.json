@@ -1,0 +1,16 @@
+[
+  {
+    "catwayNumber": 101,
+    "clientName": "Jean Dupont",
+    "boatName": "Le Marseillais",
+    "checkIn": "2025-04-20",
+    "checkOut": "2025-04-25"
+  },
+  {
+    "catwayNumber": 102,
+    "clientName": "Marie Claire",
+    "boatName": "L'Océanique",
+    "checkIn": "2025-04-22",
+    "checkOut": "2025-04-28"
+  }
+]
