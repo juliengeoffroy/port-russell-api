@@ -1,16 +1,14 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 40px;
+  background-color: #f7f7f7;
 }
 
 a {
   color: #00B7FF;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 40px;
-  background-color: #f7f7f7;
+  text-decoration: none;
 }
 
 h1, h2 {
@@ -32,4 +30,81 @@ input, select, button {
   margin: 8px 0;
   padding: 8px;
   font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Bouton générique */
+button {
+  background-color: #1c3e72;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #144077;
+}
+
+/* Style pour les liens de navigation dans l’en-tête */
+nav a {
+  color: white;
+  margin-left: 1.5rem;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ Titre blanc dans l’en-tête */
+header .header-title {
+  color: white !important;
+}
+
+/* Titres généraux */
+h3 {
+  color: #1c3e72;
+  text-align: center;
+}
+
+/* Tableaux stylisés */
+table {
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+  border-collapse: collapse;
+  width: 95%;
+  margin-bottom: 2rem;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Zone de détail stylisée */
+#reservationDetails {
+  max-width: 600px;
+  margin: 30px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#reservationJson {
+  white-space: pre-wrap;
+  font-size: 15px;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 4px solid #1c3e72;
 }

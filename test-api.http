@@ -1,0 +1,72 @@
+### 🔐 Authentification - Connexion Bibliothécaire
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "djugeoffroy@gmail.com",
+  "password": "Geoffroy01"
+}
+
+### 👤 Obtenir tous les utilisateurs
+GET http://localhost:5000/api/users
+Authorization: Bearer {{token}}
+
+### 👤 Obtenir un utilisateur par ID
+GET http://localhost:5000/api/users/661b1234567890abcdef1234
+Authorization: Bearer {{token}}
+
+### ✏️ Modifier un utilisateur
+PATCH http://localhost:5000/api/users/661b1234567890abcdef1234
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Jean Dupont",
+  "phone": "0611223344"
+}
+
+### ❌ Supprimer un utilisateur
+DELETE http://localhost:5000/api/users/661b1234567890abcdef1234
+Authorization: Bearer {{token}}
+
+### 🚤 Obtenir tous les catways
+GET http://localhost:5000/api/catways
+
+### 🛶 Créer un catway
+POST http://localhost:5000/api/catways
+Content-Type: application/json
+
+{
+  "catwayNumber": 210,
+  "type": "long",
+  "catwayState": "disponible"
+}
+
+### ❌ Supprimer un catway
+DELETE http://localhost:5000/api/catways/661babcdef1234567890abcd
+
+### 📅 Créer une réservation
+POST http://localhost:5000/api/catways/201/reservations
+Content-Type: application/json
+
+{
+  "clientName": "Capitaine Haddock",
+  "boatName": "La Licorne",
+  "checkIn": "2025-06-01",
+  "checkOut": "2025-06-05"
+}
+
+### 📋 Lister toutes les réservations
+GET http://localhost:5000/api/reservations
+
+### ❌ Supprimer une réservation
+DELETE http://localhost:5000/api/catways/201/reservations/661cdef9876543210abcde12
+
+### 🔐 Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@port.com",
+  "password": "123456"
+}

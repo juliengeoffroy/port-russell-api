@@ -1,61 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8">
-  <title>Port de Plaisance de Russell</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <title>Accueil - Port de Plaisance de Russell</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    background-image: url('/port.jpg'); /* image à placer dans public */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #222;
-    text-align: center;
-    margin-top: 50px;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  h1 {
-    color: #1c3e72;
-  }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('port.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      min-height: 100vh;
+    }
 
-  .button-container {
-    margin-top: 30px;
-  }
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .btn {
-    display: inline-block;
-    background-color: #1c3e72;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
+    header img {
+      height: 40px;
+    }
 
-  .btn:hover {
-    background-color: #144077;
-  }
-</style>
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
 
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    .login-btn {
+      background-color: #ffd700;
+      color: black;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      text-align: center;
+      margin-top: 10vh;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 8px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    .btn-doc {
+      margin-top: 2rem;
+      display: inline-block;
+      background-color: #fff;
+      color: #333;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-doc:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
-  <img src="/logo.png" alt="Logo Port de Plaisance" style="max-width: 200px; margin-bottom: 20px;">
 
-  <h1>Bienvenue à l'API du Port de Plaisance de Russell</h1>
-  <p>Connectez-vous pour accéder à votre tableau de bord.</p>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="logo.png" alt="Logo Port Russell" style="height: 50px; margin-right: 10px;">
+      <span style="font-size: 20px; font-weight: bold;">Port de Plaisance de Russell</span>
+    </div>
+    <nav>
+      <a href="/">Accueil</a>
+      <a href="/dashboard">Tableau de bord</a>
+      <a href="/documentation">Documentation</a>
+      <a href="/login" class="login-btn" id="authBtn">Connexion</a>
+    </nav>
+  </header>
 
-  <div class="button-container">
-    <a href="/dashboard" class="btn">Accéder au tableau de bord</a>
-    <a href="/documentation" class="btn">Voir la documentation de l’API</a>
-    <a href="/login" class="btn">Se connecter</a>
-  </div>
+  <main>
+    <h1>Bienvenue à l'API du Port de Plaisance de Russell</h1>
+    <p>Connectez-vous pour accéder à votre tableau de bord et gérer vos réservations de catways.</p>
+    <a href="/documentation" class="btn-doc">📄 Voir la documentation</a>
+  </main>
+  <script>
+  const authBtn = document.getElementById('authBtn');
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    authBtn.textContent = 'Déconnexion';
+    authBtn.href = '#';
+    authBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = '/';
+    });
+  } else {
+    authBtn.textContent = 'Connexion';
+    authBtn.href = '/login';
+  }
+</script>
 
 </body>
-
 </html>
+

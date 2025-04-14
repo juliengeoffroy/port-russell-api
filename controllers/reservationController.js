@@ -58,3 +58,17 @@ exports.deleteReservation = async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la suppression' });
   }
 };
+
+exports.updateReservation = async (req, res) => {
+  try {
+    const updated = await Reservation.findByIdAndUpdate(
+      req.params.idReservation,
+      req.body,
+      { new: true }
+    );
+    res.json({ message: "Réservation mise à jour", updated });
+  } catch (error) {
+    res.status(400).json({ error: "Erreur lors de la mise à jour de la réservation" });
+  }
+};
+

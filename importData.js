@@ -1,28 +1,53 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
-require('dotenv').config();
-
+const dotenv = require('dotenv');
 const Catway = require('./models/Catway');
-const Reservation = require('./models/Reservation');
+const Reservation = require('./models/Reservation'); // ✅ ajouter le modèle
 
-// Connexion MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connecté à MongoDB"))
-  .catch(err => console.error("❌ Erreur de connexion :", err));
+dotenv.config(); // charge le .env
 
-// Lire les fichiers JSON
-const catways = JSON.parse(fs.readFileSync('./data/catways.json'));
-const reservations = JSON.parse(fs.readFileSync('./data/reservations.json'));
+const catways = [
+  { catwayNumber: 201, type: 'long', catwayState: 'disponible' },
+  { catwayNumber: 202, type: 'short', catwayState: 'occupé' },
+  { catwayNumber: 203, type: 'long', catwayState: 'réparation' },
+  { catwayNumber: 204, type: 'short', catwayState: 'disponible' }
+];
 
-// Importer les données
+const reservations = [
+  {
+    catwayNumber: 201,
+    clientName: 'Jean Marin',
+    boatName: 'Le Dauphin',
+    checkIn: new Date('2025-05-01'),
+    checkOut: new Date('2025-05-03')
+  },
+  {
+    catwayNumber: 202,
+    clientName: 'Claire Voile',
+    boatName: 'La Mouette',
+    checkIn: new Date('2025-05-10'),
+    checkOut: new Date('2025-05-12')
+  }
+];
+
 async function importData() {
   try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("✅ Connexion MongoDB réussie.");
+
+    // Supprimer les anciennes données
+    await Catway.deleteMany();
+    await Reservation.deleteMany();
+
+    // Insérer les nouvelles données
     await Catway.insertMany(catways);
+    console.log("✅ Catways importés avec succès !");
+
     await Reservation.insertMany(reservations);
-    console.log("✅ Données importées avec succès !");
+    console.log("✅ Réservations importées avec succès !");
+
     process.exit();
-  } catch (err) {
-    console.error("❌ Erreur d'import :", err);
+  } catch (error) {
+    console.error("❌ Erreur lors de l'import :", error);
     process.exit(1);
   }
 }

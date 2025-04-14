@@ -21,7 +21,6 @@ exports.getCatwayById = async (req, res) => {
   }
 };
 
-// POST /catways : créer un catway
 exports.createCatway = async (req, res) => {
   const { catwayNumber, type, catwayState } = req.body;
   try {
@@ -29,9 +28,14 @@ exports.createCatway = async (req, res) => {
     await newCatway.save();
     res.status(201).json(newCatway);
   } catch (error) {
-    res.status(400).json({ error: 'Erreur lors de la création du catway' });
+    console.error(error); // 👉 Affiche l'erreur exacte dans la console
+    if (error.code === 11000) {
+      return res.status(400).json({ error: "Ce numéro de catway existe déjà." });
+    }
+    res.status(400).json({ error: error.message || 'Erreur lors de la création du catway' });
   }
 };
+
 
 // PUT /catways/:id : remplacer un catway entier
 exports.updateCatway = async (req, res) => {

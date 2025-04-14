@@ -2,275 +2,601 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Tableau de bord - Port de Plaisance</title>
+  <title>Tableau de Bord - Port de Plaisance</title>
   <link rel="stylesheet" href="/style.css">
-  
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f6fc;
-    margin: 20px;
-    
-  }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('fond.jpg');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(4px);
+    }
+    header {
+      background-color: rgba(28, 62, 114, 0.95);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header img {
+      height: 40px;
+      margin-right: 1rem;
+    }
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .form-container {
+      max-width: 800px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #1c3e72;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #1c3e72;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #144077;
+    }
+    .details-box {
+      background-color: #fff;
+      padding: 15px;
+      margin-top: 20px;
+      border-left: 5px solid #1c3e72;
+      border-radius: 5px;
+    }
+    .back-button {
+      background-color: #ccc;
+      color: black;
+      margin-top: 15px;
+    }
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px; /* Espace entre les boutons */
+      align-items: flex-start;
+    }
+    .action-buttons button {
+      width: 100px;
+    }
+    .header-title {
+      color: white !important;
+    }
 
-  h1, h2 {
-    color: #1c3e72;
-    text-align: center;
-  }
+    table {
+      margin: 0 auto; /* ✅ Centrage horizontal */
+      width: 95%;
+      background-color: white;
+      border-radius: 8px;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
 
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px;
-    gap: 20px; /* espace entre les blocs */
-  }
 
-  form {
-    background: white;
-    padding: 90px;
-    border-radius: 10px;
-    margin: 30px auto;
-    max-width: 400px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-
-  input, select, button {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-  }
-
-  button {
-    background-color: #1c3e72;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #144077;
-  }
-
-  hr {
-    margin: 50px auto;
-    border: none;
-    border-top: 2px solid #ddd;
-    width: 60%;
-  }
-  .btn-grey {
-    display: inline-block;
-    margin: 20px;
-    background-color: #ccc;
-    color: #000;
-    padding: 10px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-  }
-</style>
-
+  </style>
 </head>
-<script>
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="logo.png" alt="Logo">
+      <h3>Port de Plaisance de Russell</h3>
+    </div>
+    <nav>
+      <a href="/">Accueil</a>
+      <a href="/documentation">Documentation</a>
+      <a href="#" onclick="logout()">Déconnexion</a>
+    </nav>
+  </header>
 
-  // Redirige vers la page de login si pas de token
-  if (!localStorage.getItem('token')) {
-    window.location.href = '/login';
-  }
+  <h1>Tableau de bord</h1>
 
-  async function loadCatways() {
-    const res = await fetch('/api/catways');
-    const catways = await res.json();
-    const tbody = document.querySelector('#catwayTable tbody');
-    tbody.innerHTML = ''; // Nettoyer le tableau
+  <div class="form-container">
+    <h2>Créer un utilisateur</h2>
+    <form id="createUserForm">
+      <input type="text" name="name" placeholder="Nom" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="phone" placeholder="Téléphone"> <!-- ✅ Ajout -->
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <button type="submit">Créer</button>
+    </form>
+  </div>
 
-    catways.forEach(catway => {
+  <div class="form-container">
+    <h2>Créer un catway</h2>
+    <form id="createCatwayForm">
+      <input type="number" name="catwayNumber" placeholder="Numéro du catway" required>
+      <select name="type" required>
+        <option value="long">Long</option>
+        <option value="short">Short</option>
+      </select>
+      <input type="text" name="catwayState" placeholder="État" required>
+      <button type="submit">Créer</button>
+    </form>
+  </div>
+
+  <div class="form-container">
+    <h2>Créer une réservation</h2>
+    <form id="createReservationForm">
+      <input type="number" name="catwayNumber" placeholder="Numéro du catway" required>
+      <input type="text" name="clientName" placeholder="Nom du client" required>
+      <input type="text" name="boatName" placeholder="Nom du bateau" required>
+      <input type="date" name="checkIn" required>
+      <input type="date" name="checkOut" required>
+      <button type="submit">Réserver</button>
+    </form>
+  </div>
+
+  <h2>Liste des Utilisateurs</h2>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Liste des Catways</h2>
+  <table id="catwayTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Numéro</th>
+        <th>Type</th>
+        <th>État</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="catwayTableBody"></tbody>
+  </table>
+
+  <h2>Liste des Réservations</h2>
+  <table id="reservationTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Catway #</th>
+        <th>Client</th>
+        <th>Bateau</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+  <tbody></tbody>
+  </table>
+
+  <div id="detailsSection" style="display:none;">
+    <h2 id="detailTitle">Détails</h2>
+      <div class="details-box">
+        <pre id="reservationJson"></pre>
+        <button class="back-button" onclick="hideDetails()">Retour</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+  async function loadUsers() {
+    const res = await fetch('/api/users', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    });
+    const users = await res.json();
+    const tbody = document.querySelector('#userTable tbody');
+    tbody.innerHTML = '';
+    users.forEach(u => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${catway._id}</td>
-        <td>${catway.catwayNumber}</td>
-        <td>${catway.type}</td>
-        <td>${catway.catwayState}</td>
-        <td>
-          <button onclick="editCatway('${catway._id}', '${catway.catwayState}')">Modifier</button>
-          <button onclick="deleteCatway('${catway._id}')">Supprimer</button>
-        </td>
-      `;
+        <td>${u._id}</td>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.phone || '—'}</td>
+        <td class="action-buttons">
+          <button onclick='showDetails(${JSON.stringify(u)}, "👤 Détails utilisateur")'>Voir</button>
+          <button onclick="window.location.href='/modifier-utilisateur.html?id=${u._id}'">Modifier</button>
+          <button onclick="confirmDeleteUser('${u._id}')">Supprimer</button>
+        </td>`;
       tbody.appendChild(tr);
     });
   }
-
-  async function deleteCatway(id) {
-    if (!confirm('Supprimer ce catway ?')) return;
-    await fetch('/api/catways/' + id, { method: 'DELETE' });
-    loadCatways();
+// ❌ Supprimer un utilisateur
+  function confirmDeleteUser(id) {
+    if (confirm("❌ Supprimer cet utilisateur ?")) {
+      fetch(`/api/users/${id}`, {
+        method: 'DELETE'
+      })
+      .then(() => {
+        alert("✅ Utilisateur supprimé !");
+        loadUsers(); // recharger la liste
+      })
+      .catch(err => {
+        alert("Erreur lors de la suppression.");
+        console.error(err);
+      });
+    }
   }
 
-  function editCatway(id, state) {
-    document.getElementById('editCatwayId').value = id;
-    document.querySelector('input[name="catwayState"]').value = state;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  // Appel automatique au chargement
+  loadUsers();
 
-  loadCatways();
-    async function loadReservations() {
-    const res = await fetch('/api/reservations');
-    const reservations = await res.json();
-    const tbody = document.querySelector('#reservationTable tbody');
-    tbody.innerHTML = ''; // Nettoyer le tableau
+function editUser(id, name, email, phone) {
+  const newName = prompt('Nouveau nom :', name);
+  const newEmail = prompt('Nouvel email :', email);
+  const newPhone = prompt('Téléphone :', phone);
+  if (!newName || !newEmail) return;
+  fetch(`/api/users/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: newName, email: newEmail, phone: newPhone })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || 'Utilisateur modifié');
+    loadUsers();
+  });
+}
 
-    reservations.forEach(r => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${r._id}</td>
-        <td>${r.catwayNumber}</td>
-        <td>${r.clientName}</td>
-        <td>${r.boatName}</td>
-        <td>${r.checkIn ? r.checkIn.split('T')[0] : ''}</td>
-        <td>${r.checkOut ? r.checkOut.split('T')[0] : ''}</td>
-        <td>
-          <button onclick="editReservation('${r._id}', '${r.catwayNumber}', '${r.clientName}', '${r.boatName}', '${r.checkIn}', '${r.checkOut}')">Modifier</button>
-          <button onclick="deleteReservation('${r._id}', '${r.catwayNumber}')">Supprimer</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
+function deleteUser(id) {
+  if (!confirm('Confirmer la suppression ?')) return;
+  fetch(`/api/users/${id}`, { method: 'DELETE' })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message || 'Utilisateur supprimé');
+      loadUsers();
     });
-  }
+}
 
-  async function deleteReservation(id, catwayNumber) {
-    if (!confirm('Supprimer cette réservation ?')) return;
-    await fetch(`/api/catways/${catwayNumber}/reservations/${id}`, {
+loadUsers();
+
+     function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+
+    async function updateUser(e) {
+      e.preventDefault();
+      const id = document.getElementById("userId").value;
+      const name = document.getElementById("newName").value;
+      const email = document.getElementById("newEmail").value;
+      const phone = document.getElementById("newPhone").value;
+
+      const res = await fetch(`/api/users/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone })
+      });
+
+      const data = await res.json();
+      alert(data.message || "Utilisateur modifié !");
+    }
+
+    async function deleteUser(e) {
+      e.preventDefault();
+      const id = document.getElementById("deleteUserId").value;
+
+      if (!confirm("Confirmer la suppression de l'utilisateur ?")) return;
+
+      const res = await fetch(`/api/users/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+      alert(data.message || "Utilisateur supprimé !");
+    }
+
+    function confirmDeleteCatway(id) {
+  if (confirm("❌ Supprimer ce catway ? Cette action est définitive.")) {
+    fetch(`/api/catways/${id}`, {
       method: 'DELETE'
+    })
+    .then(() => {
+      alert("✅ Catway supprimé !");
+      loadCatways(); // recharge la liste
+    })
+    .catch(err => {
+      alert("Erreur lors de la suppression du catway.");
+      console.error(err);
     });
-    loadReservations();
   }
-
-  function editReservation(id, catwayNumber, clientName, boatName, checkIn, checkOut) {
-    document.getElementById('editResId').value = id;
-    document.getElementById('editResCatwayNum').value = catwayNumber;
-    document.querySelector('input[name="clientName"]').value = clientName;
-    document.querySelector('input[name="boatName"]').value = boatName;
-    document.querySelector('input[name="checkIn"]').value = checkIn.split('T')[0];
-    document.querySelector('input[name="checkOut"]').value = checkOut.split('T')[0];
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  function logout() {
-  localStorage.removeItem('token');
-  window.location.href = '/login';
 }
 
 
-  // Charger les deux tableaux au démarrage
-  loadCatways();
-  loadReservations();
+    function confirmDeleteReservation(id, catwayNumber) {
+      if (confirm("❌ Supprimer cette réservation ? Cette action est définitive.")) {
+        fetch(`/api/catways/${catwayNumber}/reservations/${id}`, {
+          method: 'DELETE'
+        })
+        .then(() => {
+          alert("✅ Réservation supprimée !");
+            loadReservations(); // recharge la liste
+        })
+        .catch(err => {
+          alert("Erreur lors de la suppression de la réservation.");
+          console.error(err);
+        });
+      }
+    }
 
-</script>
 
-<body>
+    if (!localStorage.getItem('token')) window.location.href = '/login';
 
-  <a href="/" class="btn-grey" style="display: inline-block; margin-bottom: 20px; background-color: #ccc; color: #000; padding: 10px 20px; border-radius: 6px; text-decoration: none;">⬅ Retour à l'accueil</a>
-  <a href="#" onclick="logout()" style="margin-left: 10px; background-color: #e74c3c; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">🚪 Déconnexion</a>
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
 
-<div class="form-container">
-  <h1>Tableau de bord</h1>
-  <div class="form-container">
-  <h2>Créer un utilisateur</h2>
-  <form action="/api/auth/register" method="POST">
-    <input type="text" name="name" placeholder="Nom" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Mot de passe" required><br>
-    <button type="submit">Créer</button>
-  </form>
+    function showDetails(data, title) {
+      document.getElementById('detailTitle').textContent = title;
+      document.getElementById('reservationJson').textContent = JSON.stringify(data, null, 2);
+      document.getElementById('detailsSection').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('detailsSection').offsetTop, behavior: 'smooth' });
+    }
 
-  <h2>Créer un catway</h2>
-  <form action="/api/catways" method="POST">
-    <input type="number" name="catwayNumber" placeholder="Numéro" required><br>
-    <select name="type" required>
-      <option value="long">Long</option>
-      <option value="short">Short</option>
-    </select><br>
-    <input type="text" name="catwayState" placeholder="État" required><br>
-    <button type="submit">Créer</button>
-  </form>
+    function hideDetails() {
+      document.getElementById('detailsSection').style.display = 'none';
+    }
 
-  <h2>Créer une réservation</h2>
-  <form action="/api/catways/1/reservations" method="POST">
-    <input type="text" name="clientName" placeholder="Nom du client" required><br>
-    <input type="text" name="boatName" placeholder="Nom du bateau" required><br>
-    <input type="date" name="checkIn" required><br>
-    <input type="date" name="checkOut" required><br>
-    <button type="submit">Réserver</button>
-  </form>
+    async function loadCatways() {
+      const res = await fetch('/api/catways');
+      const catways = await res.json();
+      const tbody = document.querySelector('#catwayTable tbody');
+      tbody.innerHTML = '';
+      catways.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${c._id}</td>
+          <td>${c.catwayNumber}</td>
+          <td>${c.type}</td>
+          <td>${c.catwayState}</td>
+          <td class="actions">
+            <button onclick='showDetails(${JSON.stringify(c)}, "🛶 Détails du catway")'>Voir</button>
+            <button onclick="window.location.href='/modifier-catway.html?id=${c._id}'">Modifier</button>
+            <button onclick="confirmDeleteCatway('${c._id}')">Supprimer</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
 
-  <hr>
-<h2>Modifier un catway</h2>
-<form action="/api/catways/ID_A_REMPLACER" method="POST" onsubmit="this.action = '/api/catways/' + document.getElementById('editCatwayId').value; this.method='PATCH';">
-  <input type="text" id="editCatwayId" name="id" placeholder="ID du catway" required><br>
-  <input type="text" name="catwayState" placeholder="Nouvel état" required><br>
-  <button type="submit">Modifier</button>
-</form>
+    async function confirmDeleteCatway(id) {
+      if (confirm('Supprimer ce catway ?')) {
+        await fetch(`/api/catways/${id}`, { method: 'DELETE' });
+        loadCatways();
+      }
+    }
 
-<h2>Supprimer un catway</h2>
-<form action="" method="POST" onsubmit="this.action = '/api/catways/' + document.getElementById('deleteCatwayId').value; this.method='POST'; this._method='DELETE';">
-  <input type="text" id="deleteCatwayId" placeholder="ID du catway à supprimer" required><br>
-  <button type="submit" onclick="this.form.method='DELETE'">Supprimer</button>
-</form>
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
 
-<hr>
-<h2>Modifier une réservation</h2>
-<form action="/api/catways/CATWAYNUM/reservations/ID_A_REMPLACER" method="POST" onsubmit="this.action = '/api/catways/' + document.getElementById('editResCatwayNum').value + '/reservations/' + document.getElementById('editResId').value; this.method='PATCH';">
-  <input type="text" id="editResId" placeholder="ID de la réservation" required><br>
-  <input type="number" id="editResCatwayNum" placeholder="Numéro de catway" required><br>
-  <input type="text" name="clientName" placeholder="Nom client"><br>
-  <input type="text" name="boatName" placeholder="Nom bateau"><br>
-  <input type="date" name="checkIn"><br>
-  <input type="date" name="checkOut"><br>
-  <button type="submit">Modifier</button>
-</form>
+    loadCatways();
 
-<h2>Supprimer une réservation</h2>
-<form action="" method="POST" onsubmit="this.action = '/api/catways/' + document.getElementById('deleteResCatway').value + '/reservations/' + document.getElementById('deleteResId').value; this.method='DELETE';">
-  <input type="text" id="deleteResId" placeholder="ID de la réservation à supprimer" required><br>
-  <input type="number" id="deleteResCatway" placeholder="Numéro de catway associé" required><br>
-  <button type="submit">Supprimer</button>
-</form>
+    async function loadReservations() {
+      const res = await fetch('/api/reservations');
+      const reservations = await res.json();
+      const tbody = document.querySelector('#reservationTable tbody');
+      tbody.innerHTML = '';
+      reservations.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r._id}</td>
+          <td>${r.catwayNumber}</td>
+          <td>${r.clientName}</td>
+          <td>${r.boatName}</td>
+          <td>${r.checkIn.split('T')[0]}</td>
+          <td>${r.checkOut.split('T')[0]}</td>
+          <td>
+            <div class="action-buttons">
+              <button onclick='showDetails(${JSON.stringify(r)}, "📝 Détails de la réservation")'>Voir</button>
+              <button onclick="window.location.href='/modifier-reservation.html?id=${r._id}&catway=${r.catwayNumber}'">Modifier</button>
+              <button onclick="confirmDeleteReservation('${r._id}', '${r.catwayNumber}')">Supprimer</button>
 
-</div>
-<h2>Liste des catways</h2>
-<table id="catwayTable" border="1" cellspacing="0" cellpadding="10" style="margin: auto; background-color: white; border-radius: 8px;">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Numéro</th>
-      <th>Type</th>
-      <th>État</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+            </div>  
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
 
-<h2>Liste des réservations</h2>
-<table id="reservationTable" border="1" cellspacing="0" cellpadding="10" style="margin: auto; background-color: white; border-radius: 8px;">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Catway #</th>
-      <th>Client</th>
-      <th>Bateau</th>
-      <th>Check-in</th>
-      <th>Check-out</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    loadCatways();
+    loadReservations();
+
+    let catwayToDelete = null;
+
+function confirmDeleteCatway(id) {
+  catwayToDelete = id;
+  document.getElementById("confirmBox").style.display = "flex";
+}
+
+function closeConfirmBox() {
+  catwayToDelete = null;
+  document.getElementById("confirmBox").style.display = "none";
+}
+
+function proceedCatwayDelete() {
+  if (!catwayToDelete) return;
+
+  fetch(`/api/catways/${catwayToDelete}`, {
+    method: 'DELETE'
+  })
+  .then(() => {
+    alert("✅ Catway supprimé !");
+    closeConfirmBox();
+    loadCatways();
+  })
+  .catch(err => {
+    alert("Erreur lors de la suppression.");
+    console.error(err);
+    closeConfirmBox();
+  });
+}
+
+  let reservationToDelete = { id: null, catwayNumber: null };
+
+function confirmDeleteReservation(id, catwayNumber) {
+  reservationToDelete = { id, catwayNumber };
+  document.getElementById("confirmReservationBox").style.display = "flex";
+}
+
+function closeReservationConfirmBox() {
+  reservationToDelete = { id: null, catwayNumber: null };
+  document.getElementById("confirmReservationBox").style.display = "none";
+}
+
+function proceedReservationDelete() {
+  const { id, catwayNumber } = reservationToDelete;
+  if (!id || !catwayNumber) return;
+
+  fetch(`/api/catways/${catwayNumber}/reservations/${id}`, {
+    method: 'DELETE'
+  })
+    .then(() => {
+      alert("✅ Réservation supprimée !");
+      closeReservationConfirmBox();
+      loadReservations();
+    })
+    .catch(err => {
+      alert("Erreur lors de la suppression.");
+      console.error(err);
+      closeReservationConfirmBox();
+    });
+    }
+  document.getElementById('createUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          password: form.password.value
+        })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+      form.reset();
+      loadUsers(); 
+  });
+
+  document.getElementById('updateUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const res = await fetch(`/api/users/${userId.value}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newName.value,
+          email: newEmail.value
+        })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+  });
+
+  document.getElementById('deleteUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!confirm('Confirmer la suppression ?')) return;
+      const res = await fetch(`/api/users/${deleteUserId.value}`, { method: 'DELETE' });
+      const data = await res.json();
+      alert(data.message || data.error);
+  });
+
+  document.getElementById('createCatwayForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/catways', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          catwayNumber: form.catwayNumber.value,
+          type: form.type.value,
+          catwayState: form.catwayState.value
+        })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+  });
+
+    document.getElementById('createReservationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch(`/api/catways/${form.catwayNumber.value}/reservations`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientName: form.clientName.value,
+          boatName: form.boatName.value,
+          checkIn: form.checkIn.value,
+          checkOut: form.checkOut.value
+        })
+      });
+      const data = await res.json();
+      console.log(data);
+      alert(data.message || data.error);
+    });
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+
+  </script>
+    <!-- Boîte de confirmation personnalisée -->
+    <div id="confirmBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center;">
+      <div style="background:white; padding:30px; border-radius:10px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.2); max-width:400px;">
+        <p style="font-size:18px; margin-bottom:20px;">❌ Confirmer la suppression de ce catway ?</p>
+        <button onclick="proceedCatwayDelete()" style="margin-right:15px; background:#e74c3c; color:white; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;">Oui, supprimer</button>
+        <button onclick="closeConfirmBox()" style="background:#ccc; color:black; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;">Annuler</button>
+      </div>
+    </div>
+
+    <!-- Boîte de confirmation pour la suppression de réservation -->
+    <div id="confirmReservationBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center;">
+      <div style="background:white; padding:30px; border-radius:10px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.2); max-width:400px;">
+        <p style="font-size:18px; margin-bottom:20px;">❌ Confirmer la suppression de cette réservation ?</p>
+        <button onclick="proceedReservationDelete()" style="margin-right:15px; background:#e74c3c; color:white; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;">Oui, supprimer</button>
+        <button onclick="closeReservationConfirmBox()" style="background:#ccc; color:black; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;">Annuler</button>
+      </div>
+    </div>
 
 </body>
 </html>

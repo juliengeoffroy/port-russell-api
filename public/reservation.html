@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détails de la Réservation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f6fc;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1c3e72;
+    }
+
+    .box {
+      max-width: 500px;
+      background: white;
+      padding: 30px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #1c3e72;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Détails de la Réservation</h1>
+  <div class="box" id="reservationDetail">
+    Chargement...
+  </div>
+
+  <a href="/dashboard">⬅ Retour au tableau de bord</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch(`/api/reservations/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('reservationDetail').innerHTML = `
+          <div class="label">Client :</div> ${data.clientName}
+          <div class="label">Bateau :</div> ${data.boatName}
+          <div class="label">Catway # :</div> ${data.catwayNumber}
+          <div class="label">Check-in :</div> ${data.checkIn.split('T')[0]}
+          <div class="label">Check-out :</div> ${data.checkOut.split('T')[0]}
+        `;
+      })
+      .catch(err => {
+        document.getElementById('reservationDetail').innerHTML = "Erreur lors du chargement.";
+      });
+  </script>
+</body>
+</html>

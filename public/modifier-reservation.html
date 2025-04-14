@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier une réservation</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f6fc;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1c3e72;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      color: white;
+    }
+    header img {
+      height: 50px;
+    }
+    .header-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #1c3e72;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #1c3e72;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #144077;
+    }
+    .btn-back {
+      display: inline-block;
+      background-color: #ccc;
+      color: #000;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center;">
+    <img src="/logo.png" alt="Logo Port Russell">
+    <span class="header-title" style="margin-left: 10px;">Port de Plaisance de Russell</span>
+  </div>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/dashboard">Tableau de bord</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>✏️ Modifier une réservation</h1>
+  <form id="editForm">
+    <input type="text" id="clientName" placeholder="Nom du client" required>
+    <input type="text" id="boatName" placeholder="Nom du bateau" required>
+    <input type="date" id="checkIn" required>
+    <input type="date" id="checkOut" required>
+    <button type="submit">Enregistrer les modifications</button>
+  </form>
+  <a href="/dashboard" class="btn-back">⬅ Retour</a>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const catway = params.get('catway');
+
+  fetch(`/api/catways/${catway}/reservations/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('clientName').value = data.clientName;
+      document.getElementById('boatName').value = data.boatName;
+      document.getElementById('checkIn').value = data.checkIn.split('T')[0];
+      document.getElementById('checkOut').value = data.checkOut.split('T')[0];
+    });
+
+  document.getElementById('editForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const body = {
+      clientName: document.getElementById('clientName').value,
+      boatName: document.getElementById('boatName').value,
+      checkIn: document.getElementById('checkIn').value,
+      checkOut: document.getElementById('checkOut').value
+    };
+
+    const res = await fetch(`/api/catways/${catway}/reservations/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const result = await res.json();
+    alert(result.message || "Réservation modifiée !");
+    window.location.href = '/dashboard';
+  });
+</script>
+
+</body>
+</html>
