@@ -2,29 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Documentation de l'API</title>
-  
+  <title>Documentation de l'API - Port de Plaisance</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 2rem;
       background: #f0f4f7;
+      color: #333;
     }
     h1 {
       color: #2a4d69;
     }
     section {
       background: white;
-      padding: 1rem;
+      padding: 1rem 2rem;
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
     code {
       background: #eaeaea;
-      padding: 2px 4px;
+      padding: 3px 6px;
       border-radius: 4px;
       font-size: 0.95em;
+    }
+    h2 {
+      color: #144077;
+    }
+    ul {
+      padding-left: 1.2rem;
     }
   </style>
 </head>
@@ -33,25 +39,55 @@
 
   <section>
     <h2>🔐 Authentification</h2>
-    <p><code>POST /api/auth/register</code> – Créer un compte</p>
-    <p><code>POST /api/auth/login</code> – Se connecter (retourne un token)</p>
+    <ul>
+      <li><code>POST /api/auth/register</code> – Créer un compte (bibliothécaire)</li>
+      <li><code>POST /api/auth/login</code> – Se connecter (retourne un token JWT)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>👤 Utilisateurs</h2>
+    <p><strong>⚠️ Requiert un token dans l'en-tête Authorization</strong></p>
+    <ul>
+      <li><code>GET /api/users</code> – Liste des utilisateurs</li>
+      <li><code>GET /api/users/:id</code> – Détail d’un utilisateur</li>
+      <li><code>PATCH /api/users/:id</code> – Modifier un utilisateur</li>
+      <li><code>DELETE /api/users/:id</code> – Supprimer un utilisateur</li>
+    </ul>
   </section>
 
   <section>
     <h2>🛶 Catways</h2>
-    <p><code>GET /api/catways</code> – Liste des catways</p>
-    <p><code>GET /api/catways/:id</code> – Détails d’un catway</p>
-    <p><code>POST /api/catways</code> – Créer un catway</p>
-    <p><code>PATCH /api/catways/:id</code> – Modifier un catway</p>
-    <p><code>DELETE /api/catways/:id</code> – Supprimer un catway</p>
+    <p><strong>⚠️ Requiert un token</strong></p>
+    <ul>
+      <li><code>GET /api/catways</code> – Liste des catways</li>
+      <li><code>GET /api/catways/:id</code> – Détails d’un catway</li>
+      <li><code>POST /api/catways</code> – Créer un catway</li>
+      <li><code>PATCH /api/catways/:id</code> – Modifier un catway</li>
+      <li><code>PUT /api/catways/:id</code> – Remplacer un catway</li>
+      <li><code>DELETE /api/catways/:id</code> – Supprimer un catway</li>
+    </ul>
   </section>
 
   <section>
     <h2>📅 Réservations</h2>
-    <p><code>GET /api/reservations</code> – Liste des réservations</p>
-    <p><code>GET /api/catways/:id/reservations/:idReservation</code> – Détail réservation</p>
-    <p><code>POST /api/catways/:id/reservations</code> – Créer une réservation</p>
-    <p><code>DELETE /api/catways/:id/reservations/:idReservation</code> – Supprimer une réservation</p>
+    <p><strong>⚠️ Requiert un token</strong></p>
+    <ul>
+      <li><code>GET /api/reservations</code> – Liste de toutes les réservations</li>
+      <li><code>GET /api/catways/:id/reservations</code> – Réservations d’un catway</li>
+      <li><code>GET /api/catways/:id/reservations/:idReservation</code> – Détail d’une réservation</li>
+      <li><code>POST /api/catways/:id/reservations</code> – Créer une réservation</li>
+      <li><code>DELETE /api/catways/:id/reservations/:idReservation</code> – Supprimer une réservation</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>🔐 Sécurité</h2>
+    <ul>
+      <li>Toutes les routes protégées doivent inclure dans l'en-tête :</li>
+      <li><code>Authorization: Bearer &lt;votre_token&gt;</code></li>
+      <li>Le token JWT est généré à la connexion et stocké dans le navigateur (ex: localStorage).</li>
+    </ul>
   </section>
 
   <br>
